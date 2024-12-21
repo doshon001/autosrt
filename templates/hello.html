@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>视频添加字幕</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+  </head>
+  <body>
+    <div class="f-flex h-10 f-center f-bottom-border">head</div>
+    <div class="f-flex w-full f-center">
+      <div class="f-flex h-80 f-center f-mt f-row f-space-between f-w-80">
+        <div class="f-flex f-w-20 f-box f-center h-60 f-col">
+          <div class="f-flex f-h-10 f-center">上传视频</div>
+          <div class="f-flex f-h-80 f-center">
+            <button type="button" class="layui-btn" id="uploadVid" lay-data="{accept: 'video'}">
+              <i class="layui-icon">&#xe67c;</i>
+              上传视频
+            </button>
+          </div>
+          <div class="f-flex f-h-10 f-center">- 1 -</div>
+        </div>
+        <div class="f-flex f-w-20 f-box f-center h-60 f-col">
+          <div class="f-flex f-h-10 f-center">上传图片</div>
+          <div class="f-flex f-h-80 f-center">
+            <button type="button" class="layui-btn" id="uploadPic">
+              <i class="layui-icon">&#xe67c;</i>
+              上传图片
+            </button>
+          </div>
+          <div class="f-flex f-h-10 f-center">- 2 -</div>
+        </div>
+        <div class="f-flex f-w-20 f-box f-center h-60 f-col">
+          <div class="f-flex f-h-10 f-center">导出视频</div>
+          <div class="f-flex f-h-80 f-center">
+            <button type="button" class="layui-btn" id="uploadPic">
+              <i class="layui-icon">&#xe67c;</i>
+              导出视频
+            </button>
+            <div>{{ filename }}</div>
+          </div>
+          <div class="f-flex f-h-10 f-center">- 3 -</div>
+        </div>
+      </div>
+    </div>
+    <div class="f-flex h-10 f-center f-mt f-top-border">footer</div>
+    <script src="../static/layui/layui.js"></script>
+    <script>
+      layui.use('upload', function(){
+        var upload = layui.upload;
+        upload.render({
+          elem: '#uploadVid',
+          url: '/api/upload/',
+          done: function(res) {
+            var filename = res.filename 
+            console.log(res)
+          }
+        });
+      });
+      layui.use('upload', function(){
+        var upload = layui.upload;
+        upload.render({
+          elem: '#uploadPic',
+          url: '/api/upload/',
+          done: function(res) {
+            var filename = res.filename 
+            console.log(res)
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

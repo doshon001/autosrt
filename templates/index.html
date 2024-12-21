@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>视频添加字幕</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+  </head>
+  <body>
+    <div class="f-flex h-10 f-center f-bottom-border">head</div>
+    <div class="f-flex w-full f-center">
+      <div class="f-flex h-80 f-center f-mt f-row f-space-between f-w-80">
+        <div class="f-flex f-w-20 f-box f-center h-60 f-col">
+          <div class="f-flex f-h-10 f-center">上传视频</div>
+          <div class="f-flex f-h-80 f-center f-col f-space-between">
+            <button type="button" class="layui-btn f-mt-5" id="uploadVid" lay-data="{accept: 'video'}">
+              <i class="layui-icon">&#xe67c;</i>
+              上传视频
+            </button>
+            <div class="f-font-color" id="videoName"></div>
+            <button type="button" class="layui-btn" id="uploadVidDone">运行</button>
+          </div>
+          <div class="f-flex f-h-10 f-center">- 1 -</div>
+        </div>
+        <div class="f-flex f-w-20 f-box f-center h-60 f-col">
+          <div class="f-flex f-h-10 f-center">上传图片</div>
+          <div class="f-flex f-h-80 f-center f-col f-space-between">
+            <button type="button" class="layui-btn f-mt-5" id="uploadPic">
+              <i class="layui-icon">&#xe67c;</i>
+              上传图片
+            </button>
+            <div class="f-font-color" id="picName"></div>
+            <button type="button" class="layui-btn" id="uploadPicDone" >运行</button>
+          </div>
+          <div class="f-flex f-h-10 f-center">- 2 -</div>
+        </div>
+        <div class="f-flex f-w-20 f-box f-center h-60 f-col">
+          <div class="f-flex f-h-10 f-center">导出视频</div>
+          <div class="f-flex f-h-80 f-center f-col f-space-between">
+            <button type="button" class="layui-btn f-mt-5" id="outputVideo">
+              <i class="layui-icon">&#xe67c;</i>
+              导出视频
+            </button>
+            <div class="f-font-color" id="outputVid"></div>
+            <button type="button" class="layui-btn" id="clearDone" >清除</button>
+          </div>
+          <div class="f-flex f-h-10 f-center">- 3 -</div>
+        </div>
+      </div>
+    </div>
+    <div class="f-flex h-10 f-center f-mt f-top-border">footer</div>
+    <script src="../static/layui/layui.js"></script>
+    <script>
+      layui.use(['upload', 'jquery'], function(){
+        $ = layui.$
+        var filename
+        var upload = layui.upload;
+        upload.render({
+          elem: '#uploadVid',
+          url: '/api/upload/',
+          done: function(res) {
+            filename = res.filename
+            $("#videoName").text(filename)
+          }
+        });
+      });
+      layui.use(['upload', 'jquery'], function(){
+        var filename
+        var upload = layui.upload;
+        upload.render({
+          elem: '#uploadPic',
+          url: '/api/upload/',
+          done: function(res) {
+            filename = res.filename
+            $("#picName").text(filename)
+          }
+        });
+      });
+      layui.use('jquery', function() {
+        $ = layui.$;
+        $("#uploadVidDone").click(function() {
+          var filename = $("#videoName").text()
+          postData = {'filename': filename}
+          $.ajax({
+            url: 'api/uploadVidDone',
+            type: 'POST',
+            data: postData,
+            success: function() {
+              console.log('video success')
+            }
+          })
+        });
+        $("#uploadPicDone").click(function() {
+          var filename = $("#picName").text()
+          postData = {'filename': filename}
+          $.ajax({
+            url: 'api/uploadPicDone',
+            type: 'POST',
+            data: postData,
+            success: function() {
+              console.log('pic success')
+            }
+          })
+        });
+        $("#outputVideo").click(function() {
+          var video_name = $("#videoName").text()
+          var png_name = $("#picName").text()
+          postData = {
+            'video_name': video_name, 
+            'png_name': png_name
+          }
+          $.ajax({
+            url: 'api/outputVideo',
+            type: 'POST',
+            data: postData,
+            success: function() {
+              console.log('output success')
+            }
+          })
+        });
+        $("#clearDone").click(function() {
+          $.ajax({
+            url: 'api/clearDone/',
+            type: 'POST',
+            success: function() {
+              console.log('clear success')
+            }
+          })
+        });
+      })
+    </script>
+  </body>
+</html>
